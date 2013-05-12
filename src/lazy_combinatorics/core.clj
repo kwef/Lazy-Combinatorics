@@ -133,11 +133,13 @@
   "Returns the lazy sequence of (1^n 2^n 3^n ...)."
   ([n] (apply map *' (take (inc n) (cons (repeat 1) (repeat naturals))))))
 
-(defn unzip-2
-  ([coll]
-   ((juxt (comp vec (partial map first))
-          (comp vec (partial map second)))
-    coll)))
+(defn zip
+  "Returns a sequence of vectors of the successive heads of each collection, where nil replaces elements of collections which are empty. Is its own inverse; that is, (apply zip (zip & colls)) should be equal to colls, assuming all elements of colls are same count."
+  ([& colls]
+   (when (some seq colls)
+     (lazy-seq
+       (cons (vec (map first colls))
+             (apply zip (map rest colls)))))))
 
 (defn constrained-cartesian
   ([moves colls]
@@ -160,7 +162,7 @@
                            [(map (partial * (count colls)) (n-hypercubes number))
                             (pattern-interleave (repeat (repeat 1)) colls)])
                        ,,)
-                  (unzip-2 ,,)
+                  (apply zip ,,)
                   (apply pattern-interleave ,,)))))))
 
 (defn cartesian
