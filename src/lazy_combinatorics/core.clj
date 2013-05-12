@@ -46,7 +46,7 @@
   "Factorial of an integer."
   ([n]
    {:pre [(>= n 0)]}
-   (reduce * (take n naturals))))
+   (reduce *' (take n naturals))))
 
 (defn binomial
   "Binomial coefficient for (n, k)."
