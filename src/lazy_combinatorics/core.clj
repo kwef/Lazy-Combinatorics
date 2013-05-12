@@ -132,6 +132,26 @@
              (apply zip (map rest colls)))))))
 
 (defn constrained-cartesian
+  "Helper function to generate a stream for any position in the cartesian product. The way that cartesian works is by interleaving streams like an n-dimensional version of this:
+  .____
+  |\\\\\\\\
+  |\\\\\\\\
+  |\\\\\\\\
+  |\\\\\\\\
+  
+  That is to say, once a stream has started taking from a particular collection, it can only spawn constrained-cartesian instances which continue to take from that collection. This creates the diagonal pattern.
+  
+  Constrained-cartesian handles interleaving the streams to compensate for bias toward streams with an origin closer to the beginning of the sequence. This produces a traversal of the cartesian space which looks like an n-dimensional version of this:
+  
+  1  2  5  10 ...
+  3  4  7  12 ...
+  6  8  9  14 ...
+  11 13 15 16 ...
+  .  .  .  .  .
+  .  .  .  .   .
+  .  .  .  .    .
+  
+  This means that for n (infinite) input streams, the location of [x, x, ... , x] will always be at x^n."
   ([moves colls]
    (when (every? seq colls)
      (lazy-seq
@@ -156,5 +176,6 @@
                   (apply pattern-interleave ,,)))))))
 
 (defn cartesian
+  "Lazy cartesian product of colls. Guarantees full traversal even with infinite sequences, unlike the version in clojure.math.combinatorics, which traverses in a manner that is not a proper pairing function for infinite lists."
   ([& colls]
    (constrained-cartesian (vec (repeat (count colls) identity)) colls)))
