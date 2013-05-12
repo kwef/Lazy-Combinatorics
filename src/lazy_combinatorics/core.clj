@@ -21,22 +21,22 @@
 (defn reduce-by
   "Returns a maps keyed by the result of key-fn on each element to the result of calling reduce with f (and val if provided) on same-key elements. (reduce-by key-fn conj [] coll) is equivalent to (group-by key-fn coll). (reduce-by identity (fn [n _] (inc n)) 0 coll) is equivalent to (frequencies coll)."
   ([key-fn f val coll]
-    (persistent!
-      (reduce (fn [m x]
-                (let [k (key-fn x)]
-                  (assoc! m k (f (m k val) x)))) (transient {}) coll)))
+   (persistent!
+     (reduce (fn [m x]
+               (let [k (key-fn x)]
+                 (assoc! m k (f (m k val) x)))) (transient {}) coll)))
   ([key-fn f coll]
-    (let [g (fn g [acc x]
-              (if (= g acc)
-                x
-                (f acc x)))]
-      (reduce-by key-fn g g coll))))
+   (let [g (fn g [acc x]
+             (if (= g acc)
+               x
+               (f acc x)))]
+     (reduce-by key-fn g g coll))))
 
 (defn take-complete
   "Returns (take n coll) iff there are at least n items in the sequence. If the sequence is too short, returns nil. Note that in order to verify that the sequence has enough items in it, this function must by necessity be non-lazy."
   ([n coll]
    (let [part (take n coll)]
-        (if (= (count part) n) part))))
+     (if (= (count part) n) part))))
 
 (defn powers-of
   "Lazy sequence of the successive powers of n."
@@ -62,8 +62,8 @@
    {:pre [(> b 1) (zero? (rem b 1)) (zero? (rem n 1))]}
    (lazy-seq
      (when (not (zero? n))
-           (cons (int (rem n b))
-                 (base-n-seq b (quot n b)))))))
+       (cons (int (rem n b))
+             (base-n-seq b (quot n b)))))))
 
 ; Lazy powerset...
 
@@ -81,18 +81,18 @@
   ([n-subsets from-index coll]
    (lazy-seq
      (when (> n-subsets 0)
-           (cons (numbered-subset from-index coll)
-                 (n-subsets-from (dec n-subsets) (inc from-index) coll))))))
+       (cons (numbered-subset from-index coll)
+             (n-subsets-from (dec n-subsets) (inc from-index) coll))))))
 
 (defn powerset
   "Returns a lazy sequence of the powerset of coll. For infinite sequences, only outputs the finite powerset -- that is, { s | s in P(coll) and |s| is finite }. For an enumeration of the full powerset of a countably infinite sequence, see Cantor."
   ([coll]
    (letfn [(powerset-iter [coll rem-coll powers]
-             (lazy-seq
-               (when (seq rem-coll)
-                     (concat (n-subsets-from (first powers) coll)
-                             (powerset-iter coll (rest rem-coll) (rest powers))))))]
-          (lazy-seq (cons (sequence nil) (powerset-iter coll coll (powers-of 2)))))))
+                          (lazy-seq
+                            (when (seq rem-coll)
+                              (concat (n-subsets-from (first powers) coll)
+                                      (powerset-iter coll (rest rem-coll) (rest powers))))))]
+     (lazy-seq (cons (sequence nil) (powerset-iter coll coll (powers-of 2)))))))
 
 ; Finer control over interleaving sequences...
 
@@ -101,10 +101,10 @@
   
   For example:
   user=> (println (take 20 (pattern-interleave [(repeat 1)  (iterate inc 1)]
-                                               [(repeat \\X) (repeat \\O)]))
+                                               [(repeat \\X) (repeat \\O)])))
   (X O X O O X O O O X O O O O X O O O O O)
   nil
-    
+  
   There are two boolean keyword arguments :complete and :blocking (both by default false). If :complete is true, then when a sequence ends before the requested number of items is taken from it, no more items are taken from it. If :blocking is true, then when any sequence ends, the result sequence ends.
   
   Note: To achieve the exact effect of Clojure's regular interleave, one could use:
@@ -113,13 +113,13 @@
    (lazy-seq
      (let [amounts (map (comp (fnil identity 0) first) spacings)
            fronts  (map (if complete take-complete take) amounts colls)]
-          (when ((if blocking every? some) seq fronts)
-                (concat (apply concat fronts)
-                        (pattern-interleave
-                          (map rest spacings)
-                          (map drop amounts colls)
-                          :complete complete
-                          :blocking blocking)))))))
+       (when ((if blocking every? some) seq fronts)
+         (concat (apply concat fronts)
+                 (pattern-interleave
+                   (map rest spacings)
+                   (map drop amounts colls)
+                   :complete complete
+                   :blocking blocking)))))))
 
 ; Lazy Cartesian product...
 
@@ -131,7 +131,7 @@
 
 (defn n-hypercubes
   "Returns the lazy sequence of (1^n 2^n 3^n ...)."
-  ([n] (apply map *' (take (inc n) (cons (cycle [1]) (cycle [naturals]))))))
+  ([n] (apply map *' (take (inc n) (cons (repeat 1) (repeat naturals))))))
 
 (defn unzip-2
   ([coll]
@@ -140,18 +140,29 @@
     coll)))
 
 (defn constrained-cartesian
-  ([unmoving colls]
-   (lazy-seq
-     (cons (map first colls)
-           (apply pattern-interleave
-                  (unzip-2
-                    (map (juxt #(map (partial *' (binomial (count colls) (key %)))
-                                     (n-hypercubes (key %)))
-                               #(apply pattern-interleave (cycle [(cycle [1])])
-                                       (map (partial apply constrained-cartesian)
-                                            (val %))))
-                         (group-by (comp count (partial filter false?) first)
-                                   (map (fn [v] [v (map #((if %1 rest identity) %2)
-                                                        v colls)])
-                                        (possible-changes false? not unmoving))))))))))
+  ([moves colls]
+   (when (every? seq colls)
+     (lazy-seq
+       (cons (map first colls)
+             (->> (map (comp (juxt first (partial apply constrained-cartesian))
+                             (juxt (fn [f _] f) (partial map (fn [f c] (f c)))))
+                       (filter (fn [fns] (not (every? #(= identity %) fns)))
+                               (possible-changes
+                                 #(= % identity) (constantly rest) moves))
+                       (repeat colls))
+                  (reduce-by
+                    (fn [[fns _]] (count (filter #(= % identity) fns)))
+                    #(conj %1 (second %2))
+                    []
+                    ,,)
+                  (sort-by key > ,,)
+                  (map (fn [[number colls]]
+                           [(map (partial * (count colls)) (n-hypercubes number))
+                            (pattern-interleave (repeat (repeat 1)) colls)])
+                       ,,)
+                  (unzip-2 ,,)
+                  (apply pattern-interleave ,,)))))))
 
+(defn cartesian
+  ([& colls]
+   (constrained-cartesian (vec (repeat (count colls) identity)) colls)))
