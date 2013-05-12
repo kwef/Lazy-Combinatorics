@@ -53,7 +53,7 @@
   ([n k]
    {:pre [(<= k n) (>= k 0) (>= k 0)]}
    (/ (factorial n)
-      (* (factorial k)
+      (*' (factorial k)
          (factorial (- n k))))))
 
 (defn base-n-seq
