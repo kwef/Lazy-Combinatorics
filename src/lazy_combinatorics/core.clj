@@ -1,19 +1,9 @@
 (ns lazy-combinatorics.core)
 
-; (require :reload '[clojure.repl :refer :all] '[lazy-combinatorics.core :refer :all]) (set! *print-length* 100)
-
 ; Some familiar infinite sequences to play with...
 (def naturals  (iterate inc 1))
 (def integers+ (iterate inc 0))
 (def integers- (iterate dec 0))
-
-; Some logic...
-
-(defn xor ([a b] (or (and (not a) b) (and a (not b)))))
-(defn iff ([a b] (not (xor a b))))
-(defn implies ([a b] (or a (not b))))
-(defn nand ([& xs] (not (reduce #(and %1 %2) true xs))))
-(defn nor ([& xs] (not (reduce #(or %1 %2) false xs))))
 
 ; Other helper utilities...
 
