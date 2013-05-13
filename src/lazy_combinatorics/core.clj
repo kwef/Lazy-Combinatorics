@@ -179,3 +179,20 @@
   "Lazy cartesian product of colls. Guarantees full traversal even with infinite sequences, unlike the version in clojure.math.combinatorics, which traverses in a manner that is not a proper pairing function for infinite lists."
   ([& colls]
    (constrained-cartesian (vec (repeat (count colls) identity)) colls)))
+
+; Some things you can do with cartesian product...
+
+(def rationals+
+  (distinct (map (fn [[n d]] (/ n d)) (cartesian naturals naturals))))
+
+(def rationals-
+  (distinct (map (fn [[n d]] (- (/ n d))) (cartesian naturals naturals))))
+
+(def rationals
+  (cons 0 (interleave rationals+ rationals-)))
+
+(def rationals-0-to-1
+  (distinct
+    (cons 0 (cons 1 (map (fn [[n d]] (/ n d))
+                         (filter (fn [[n d]] (> d n))
+                                 (cartesian naturals naturals)))))))
