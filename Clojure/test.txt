@@ -1,0 +1,59 @@
+
+|          :name |     :return-type | :declaring-class | :parameter-types | :exception-types |                            :flags |
+|----------------+------------------+------------------+------------------+------------------+-----------------------------------|
+|  IEEEremainder |           double |   java.lang.Math |  [double double] |               [] |                #{:static :public} |
+|            abs |           double |   java.lang.Math |         [double] |               [] |                #{:static :public} |
+|            abs |            float |   java.lang.Math |          [float] |               [] |                #{:static :public} |
+|            abs |             long |   java.lang.Math |           [long] |               [] |                #{:static :public} |
+|            abs |              int |   java.lang.Math |            [int] |               [] |                #{:static :public} |
+|           acos |           double |   java.lang.Math |         [double] |               [] |                #{:static :public} |
+|           asin |           double |   java.lang.Math |         [double] |               [] |                #{:static :public} |
+|           atan |           double |   java.lang.Math |         [double] |               [] |                #{:static :public} |
+|          atan2 |           double |   java.lang.Math |  [double double] |               [] |                #{:static :public} |
+|           cbrt |           double |   java.lang.Math |         [double] |               [] |                #{:static :public} |
+|           ceil |           double |   java.lang.Math |         [double] |               [] |                #{:static :public} |
+|       copySign |            float |   java.lang.Math |    [float float] |               [] |                #{:static :public} |
+|       copySign |           double |   java.lang.Math |  [double double] |               [] |                #{:static :public} |
+|            cos |           double |   java.lang.Math |         [double] |               [] |                #{:static :public} |
+|           cosh |           double |   java.lang.Math |         [double] |               [] |                #{:static :public} |
+|            exp |           double |   java.lang.Math |         [double] |               [] |                #{:static :public} |
+|          expm1 |           double |   java.lang.Math |         [double] |               [] |                #{:static :public} |
+|          floor |           double |   java.lang.Math |         [double] |               [] |                #{:static :public} |
+|    getExponent |              int |   java.lang.Math |         [double] |               [] |                #{:static :public} |
+|    getExponent |              int |   java.lang.Math |          [float] |               [] |                #{:static :public} |
+|          hypot |           double |   java.lang.Math |  [double double] |               [] |                #{:static :public} |
+|        initRNG | java.util.Random |   java.lang.Math |               [] |               [] | #{:synchronized :private :static} |
+| java.lang.Math |                  |   java.lang.Math |               [] |               [] |                       #{:private} |
+|            log |           double |   java.lang.Math |         [double] |               [] |                #{:static :public} |
+|          log10 |           double |   java.lang.Math |         [double] |               [] |                #{:static :public} |
+|          log1p |           double |   java.lang.Math |         [double] |               [] |                #{:static :public} |
+|            max |           double |   java.lang.Math |  [double double] |               [] |                #{:static :public} |
+|            max |              int |   java.lang.Math |        [int int] |               [] |                #{:static :public} |
+|            max |             long |   java.lang.Math |      [long long] |               [] |                #{:static :public} |
+|            max |            float |   java.lang.Math |    [float float] |               [] |                #{:static :public} |
+|            min |            float |   java.lang.Math |    [float float] |               [] |                #{:static :public} |
+|            min |           double |   java.lang.Math |  [double double] |               [] |                #{:static :public} |
+|            min |              int |   java.lang.Math |        [int int] |               [] |                #{:static :public} |
+|            min |             long |   java.lang.Math |      [long long] |               [] |                #{:static :public} |
+|      nextAfter |           double |   java.lang.Math |  [double double] |               [] |                #{:static :public} |
+|      nextAfter |            float |   java.lang.Math |   [float double] |               [] |                #{:static :public} |
+|         nextUp |           double |   java.lang.Math |         [double] |               [] |                #{:static :public} |
+|         nextUp |            float |   java.lang.Math |          [float] |               [] |                #{:static :public} |
+|            pow |           double |   java.lang.Math |  [double double] |               [] |                #{:static :public} |
+|         random |           double |   java.lang.Math |               [] |               [] |                #{:static :public} |
+|           rint |           double |   java.lang.Math |         [double] |               [] |                #{:static :public} |
+|          round |              int |   java.lang.Math |          [float] |               [] |                #{:static :public} |
+|          round |             long |   java.lang.Math |         [double] |               [] |                #{:static :public} |
+|          scalb |           double |   java.lang.Math |     [double int] |               [] |                #{:static :public} |
+|          scalb |            float |   java.lang.Math |      [float int] |               [] |                #{:static :public} |
+|         signum |           double |   java.lang.Math |         [double] |               [] |                #{:static :public} |
+|         signum |            float |   java.lang.Math |          [float] |               [] |                #{:static :public} |
+|            sin |           double |   java.lang.Math |         [double] |               [] |                #{:static :public} |
+|           sinh |           double |   java.lang.Math |         [double] |               [] |                #{:static :public} |
+|           sqrt |           double |   java.lang.Math |         [double] |               [] |                #{:static :public} |
+|            tan |           double |   java.lang.Math |         [double] |               [] |                #{:static :public} |
+|           tanh |           double |   java.lang.Math |         [double] |               [] |                #{:static :public} |
+|      toDegrees |           double |   java.lang.Math |         [double] |               [] |                #{:static :public} |
+|      toRadians |           double |   java.lang.Math |         [double] |               [] |                #{:static :public} |
+|            ulp |           double |   java.lang.Math |         [double] |               [] |                #{:static :public} |
+|            ulp |            float |   java.lang.Math |          [float] |               [] |                #{:static :public} |
