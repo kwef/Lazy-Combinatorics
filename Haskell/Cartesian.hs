@@ -5,20 +5,25 @@ module Cartesian where
 import Data.List
 import Data.Maybe
 import Control.Monad
+import Control.Applicative
 import Control.Arrow
 import Safe
 
 diagonalize :: [[a]] -> [[a]]
 diagonalize =
    unfoldr (uncurry $ \n ->
-      mfilter (not . null . fst) . Just
+      toMaybe (not . null . fst)
       . second (n + 1,) . stripN n)
    . (1,)
 
 stripN :: Int -> [[a]] -> ([a],[[a]])
 stripN n list =
-   let (xs,rest) = splitAt n list
-   in (mapMaybe headMay xs, mapMaybe tailMay xs ++ rest)
+   (mapMaybe headMay firstN, mapMaybe tailMay firstN ++ rest)
+   where (firstN,rest) = splitAt n list
+
+toMaybe :: (a -> Bool) -> a -> Maybe a
+toMaybe predicate item | predicate item = Just item
+toMaybe _         _    | otherwise      = Nothing
 
 pairSpace :: [a] -> [b] -> [[(a,b)]]
 pairSpace xs ys = map (\x -> map (x,) ys) xs
