@@ -4,10 +4,14 @@ module Cartesian where
 
 import Data.List
 import Data.Maybe
-import Control.Monad
-import Control.Applicative
 import Control.Arrow
 import Safe
+
+cartesian :: [a] -> [b] -> [(a,b)]
+cartesian = curry $ concat . diagonalize . uncurry pairSpace
+
+pairSpace :: [a] -> [b] -> [[(a,b)]]
+pairSpace xs ys = map (\x -> map (x,) ys) xs
 
 diagonalize :: [[a]] -> [[a]]
 diagonalize =
@@ -24,9 +28,3 @@ stripN n list =
 toMaybe :: (a -> Bool) -> a -> Maybe a
 toMaybe predicate item | predicate item = Just item
 toMaybe _         _    | otherwise      = Nothing
-
-pairSpace :: [a] -> [b] -> [[(a,b)]]
-pairSpace xs ys = map (\x -> map (x,) ys) xs
-
-cartesian :: [a] -> [b] -> [(a,b)]
-cartesian = curry $ concat . diagonalize . uncurry pairSpace
