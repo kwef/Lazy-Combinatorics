@@ -24,7 +24,7 @@ diagonalize :: [[a]] -> [[a]]
 diagonalize =
    unfoldr (\(n,xss) ->
       toMaybe (not . null . fst)
-      . second (n + 1,)
+      . second (succ n,)
       $ stripN n xss)
    . (1,)
 
