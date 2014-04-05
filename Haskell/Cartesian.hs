@@ -13,6 +13,9 @@ cartesian = curry $ concat . diagonalize . uncurry pairSpace
 pairSpace :: [a] -> [b] -> [[(a,b)]]
 pairSpace xs ys = map (\x -> map (x,) ys) xs
 
+pairSpaceWith :: (a -> b -> c) -> [a] -> [b] -> [[c]]
+pairSpaceWith f = (map (map (uncurry f)) .) . pairSpace
+
 diagonalize :: [[a]] -> [[a]]
 diagonalize =
    unfoldr (\(n,xss) ->
