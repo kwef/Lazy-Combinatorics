@@ -15,17 +15,17 @@ pairSpace xs ys = map (\x -> map (x,) ys) xs
 
 diagonalize :: [[a]] -> [[a]]
 diagonalize =
-   unfoldr (uncurry $ \n ->
+   unfoldr (\(n,xss) ->
       toMaybe (not . null . fst)
       . second (n + 1,)
-      . stripN n)
+      $ stripN n xss)
    . (1,)
 
 stripN :: Int -> [[a]] -> ([a],[[a]])
-stripN n list =
+stripN n xss =
    (mapMaybe headMay firstN,
     mapMaybe tailMay firstN ++ rest)
-   where (firstN,rest) = splitAt n list
+   where (firstN,rest) = splitAt n xss
 
 toMaybe :: (a -> Bool) -> a -> Maybe a
 toMaybe p x | p x = Just x
