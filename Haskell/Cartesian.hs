@@ -22,6 +22,7 @@ stripN n list =
 
 pairSpace :: [a] -> [b] -> [[(a,b)]]
 pairSpace xs ys = map (\x -> map (x,) ys) xs
+--pairSpace = flip (map . flip (map . (,)))
 
 cartesian :: [a] -> [b] -> [(a,b)]
 cartesian = curry $ concat . diagonalize . uncurry pairSpace
