@@ -26,7 +26,7 @@ pairsWith f xs ys = (\x -> (\y -> f x y) <$> ys) <$> xs
 diagonalize :: [[a]] -> [[a]]
 diagonalize =
    unfoldr (\(n,xss) ->
-        (second (succ n,) <$>)
+       (second (succ n,) <$>)
       . partial (not . null . snd)
       $ stripN n xss)
    . (1,)
